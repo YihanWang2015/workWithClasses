@@ -35,8 +35,8 @@
     <TextView
         android:paddingTop="100dp"
         android:id="@+id/result_text_view"
-        android:layout_width="234dp"
-        android:layout_height="104dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/submit_button"
         android:layout_toStartOf="@+id/submit_button"
