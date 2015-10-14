@@ -1,5 +1,7 @@
 package edu.kvcc.cis298.workwithclasses.workwithclasses;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,22 +11,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String KEY_RESULT = "KeyResult";
 
     private TextView mResult;
-
     private EditText mInput;
-
     private Button mSubmit;
-
 
     private Calc myCalc;
 
-
     private double result;
+
+
+
+
+    private Button mActivity;
+
+
+
+
 
 
     @Override
@@ -36,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
         mResult = (TextView)findViewById(R.id.result_text_view);
         mInput = (EditText)findViewById(R.id.number_input);
         mSubmit = (Button)findViewById(R.id.submit_button);
+
+
+//mActivity
+        mActivity = (Button)findViewById(R.id.new_activity_button);
+
 
         myCalc = new Calc();
 
@@ -61,6 +74,22 @@ public class MainActivity extends AppCompatActivity {
              //   mInput.setText("21");
             }
         });
+
+//intent   pass from main activity to sub activity
+        mActivity.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+              //  Intent i = new Intent(MainActivity.this, SubActivity.class);
+                Intent i = SubActivity.newIntent(MainActivity.this, "This is my message");
+               // startActivity(i);
+                startActivityForResult(i, 1234);
+
+
+            }
+        });
+
+
+
     }
 
 
@@ -78,10 +107,39 @@ public class MainActivity extends AppCompatActivity {
         outState.putDoubleArray("another key", myArray);
     }
 
+//=============================================
+
+    //after declaring userWentToSubActivity in sub activity, do this:
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != Activity.RESULT_OK){
+            //do work because it wasn't successful
+            //use the return statement to get out of this overriden method
+            return;
+
+        }
+
+        if(requestCode == 1234){
+
+            if(data != null){
+                // do work, not sure what yet
+                boolean beenThere = SubActivity.userWentToSubActivity(data);
+
+                if(beenThere){
+                    Toast.makeText(MainActivity.this, "User went there", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }else if(requestCode == 5678){
+
+        }
+
+    }
 
 
-
-
+    //=========================
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
